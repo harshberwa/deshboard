@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Dashboard Layout -->
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 h-screen bg-gray-800 text-white p-5 hidden md:block">
+            <h2 class="text-xl font-bold mb-5">E-Commerce Dashboard</h2>
+            <ul>
+                <li class="mb-4"><a href="#" class="block py-2 px-4 bg-gray-700 rounded section-link" data-section="dashboard">Dashboard</a></li>
+                <li class="mb-4"><a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded section-link" data-section="orders">Orders</a></li>
+                <li class="mb-4"><a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded section-link" data-section="products">Products</a></li>
+                <li class="mb-4"><a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded section-link" data-section="customers">Customers</a></li>
+                <li class="mb-4"><a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded section-link" data-section="reports">Reports</a></li>
+                <li><a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded section-link" data-section="settings">Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section">
+                <h1 class="text-2xl font-semibold mb-5">E-Commerce Overview</h1>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold">Total Sales</h2>
+                        <p class="text-2xl font-bold text-green-600">$120,500</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold">Orders</h2>
+                        <p class="text-2xl font-bold text-blue-600">2,345</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold">Customers</h2>
+                        <p class="text-2xl font-bold text-orange-600">1,150</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold">Revenue</h2>
+                        <p class="text-2xl font-bold text-purple-600">$75,000</p>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold mb-4">Sales Trends</h2>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold mb-4">Revenue Trends</h2>
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Orders & Top Products -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold mb-4">Recent Orders</h2>
+                        <ul>
+                            <li class="border-b py-2 flex justify-between">
+                                <span>Order #12345</span> <span class="text-green-600">$250</span>
+                            </li>
+                            <li class="border-b py-2 flex justify-between">
+                                <span>Order #12346</span> <span class="text-green-600">$100</span>
+                            </li>
+                            <li class="border-b py-2 flex justify-between">
+                                <span>Order #12347</span> <span class="text-green-600">$300</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-lg font-semibold mb-4">Top Selling Products</h2>
+                        <ul>
+                            <li>🔹 Wireless Headphones - 500 Sold</li>
+                            <li>🔹 Smartwatch - 450 Sold</li>
+                            <li>🔹 Gaming Mouse - 350 Sold</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Sections -->
+            <div id="orders" class="content-section hidden">
+                <h1 class="text-2xl font-semibold mb-4">Orders</h1>
+                <p>Manage customer orders here.</p>
+            </div>
+
+            <div id="products" class="content-section hidden">
+                <h1 class="text-2xl font-semibold mb-4">Products</h1>
+                <p>Manage product listings here.</p>
+            </div>
+
+            <div id="customers" class="content-section hidden">
+                <h1 class="text-2xl font-semibold mb-4">Customers</h1>
+                <p>View and manage customers here.</p>
+            </div>
+
+            <div id="reports" class="content-section hidden">
+                <h1 class="text-2xl font-semibold mb-4">Reports</h1>
+                <p>Generate business reports here.</p>
+            </div>
+
+            <div id="settings" class="content-section hidden">
+                <h1 class="text-2xl font-semibold mb-4">Settings</h1>
+                <p>Manage your account settings.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sales Chart
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [2000, 2200, 2500, 2800, 3000, 3200],
+                    borderColor: 'blue',
+                    fill: false
+                }]
+            }
+        });
+
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [5000, 7000, 8000, 10000, 12000, 15000],
+                    backgroundColor: 'green'
+                }]
+            }
+        });
+
+        // Navigation
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll(".section-link");
+            const sections = document.querySelectorAll(".content-section");
+
+            links.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    sections.forEach(section => section.classList.add("hidden"));
+                    document.getElementById(this.getAttribute("data-section")).classList.remove("hidden");
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
